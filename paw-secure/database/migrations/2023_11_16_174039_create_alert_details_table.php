@@ -15,7 +15,12 @@ return new class extends Migration
     {
         Schema::create('alert_details', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('alert');
+            $table->string('title');
+            $table->string('details');
             $table->timestamps();
+
+            $table->foreign('alert')->references('id')->on('alerts');
         });
     }
 

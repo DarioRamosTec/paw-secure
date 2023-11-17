@@ -15,7 +15,15 @@ return new class extends Migration
     {
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
+            $table->string('nickname');
+            $table->unsignedBigInteger('animal_type_id');
+            $table->string('race');
+            $table->enum('sex', ['M', 'F']);
+            $table->unsignedBigInteger('owner_id');
             $table->timestamps();
+
+            $table->foreign('animal_type_id')->references('id')->on('animal_types');
+            $table->foreign('owner_id')->references('id')->on('owners');
         });
     }
 

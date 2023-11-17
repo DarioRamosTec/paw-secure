@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('owners', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name');
+            $table->enum('gender', ['M', 'F','O']);
+            $table->unsignedInteger('age');
             $table->timestamps();
         });
     }

@@ -15,7 +15,12 @@ return new class extends Migration
     {
         Schema::create('pet_cages', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('cage_id');
+            $table->unsignedBigInteger('pet_id');
             $table->timestamps();
+
+            $table->foreign('cage_id')->references('id')->on('cages');
+            $table->foreign('pet_id')->references('id')->on('pets');
         });
     }
 

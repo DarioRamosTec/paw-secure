@@ -15,7 +15,14 @@ return new class extends Migration
     {
         Schema::create('sensor_details', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('details');
+            $table->integer('measure');
+            $table->string('unity');
+            $table->unsignedBigInteger('cage_id');
             $table->timestamps();
+
+            $table->foreign('cage_id')->references('id')->on('cages');
         });
     }
 

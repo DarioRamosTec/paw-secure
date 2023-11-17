@@ -15,7 +15,10 @@ return new class extends Migration
     {
         Schema::create('cages', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('owner');
             $table->timestamps();
+
+            $table->foreign('owner')->references('id')->on('owners');
         });
     }
 
