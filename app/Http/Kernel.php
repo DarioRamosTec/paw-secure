@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'check.role' => \App\Http\Middleware\CheckRole::class,
+        'locale' => \App\Http\Middleware\CheckLocale::class,
     ];
 }

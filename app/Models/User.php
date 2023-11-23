@@ -23,4 +23,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function getLocale()
+    {
+        return $this->lang;
+    }
 }

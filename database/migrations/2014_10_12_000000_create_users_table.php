@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('is_active')->default(false);
             $table->string('name');
+            $table->string('lang');
             $table->string('email')->unique();
             $table->string('image')->nullable();
             $table->timestamp('time_verification')->nullable();

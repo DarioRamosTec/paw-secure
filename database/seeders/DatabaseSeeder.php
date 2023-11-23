@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
             'password' => Hash::make('1234567890'),
             'role' => 1,
+            'lang' => 'en'
         ]);
     }
 }
