@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('alerts', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('sensor_details');
-            $table->string('state');
+            $table->string('title');
             $table->string('message');
-            $table->unsignedBigInteger('alert_type');
+            $table->foreignId('sensor');
             $table->timestamps();
-
-            $table->foreign('sensor_details')->references('id')->on('sensor_details');
-            $table->foreign('alert_type')->references('id')->on('alert_types');
         });
     }
 
