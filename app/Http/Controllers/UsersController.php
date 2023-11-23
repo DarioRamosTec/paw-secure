@@ -29,7 +29,7 @@ class UsersController extends Controller
     }
 
     public function store (Request $request) {
-        $content = new IdoloValidacion();
+        $content = new UserValidation();
         if (!$content->checkForCreate($request)) return $content->fail;
 
         $user = new User();
@@ -91,7 +91,7 @@ class UsersController extends Controller
     }
 }
 
-class IdoloValidacion {
+class UserValidation {
     protected $name, $email, $middle_name, $last_name, $genre, $password, $country;
     public $fail = null;
 
