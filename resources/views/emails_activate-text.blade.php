@@ -1,0 +1,1 @@
+¡Muchísimas gracias por registrarte, {{ $userName }}! Para activar tu cuenta usa . Esperamos sigas continuando el camino a una gran historia. - Gregorio Samsa, México
