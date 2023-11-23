@@ -21,10 +21,6 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });*/
 
-//Route::get('user/{id}', [UsersController::class, 'index'])->where('id', '[0-9]+')->middleware(['check.role']);
-//Route::put('user/{id}', [UsersController::class, 'update'])->where('id', '[0-9]+')->middleware(['check.role']);
-//Route::delete('user/{id}', [UsersController::class, 'destroy'])->where('id', '[0-9]+')->middleware(['check.role']);
-
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
     Route::post('/register', 'store');
     Route::get('/activate/{email}', 'activate')
@@ -32,18 +28,22 @@ Route::controller(UsersController::class)->prefix('v1')->group(function () {
 });
 
 Route::group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
-], function ($router) {
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-});
-
-Route::middleware('locale')->group([
-    'middleware' => 'api',
-    'prefix' => 'auth'
+    'middleware' => 'locale',
+    'prefix' => 'v1/auth'
 ], function ($router) {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('me', [AuthController::class, 'me']);
-    Route::put('/lang/{lang}', [MiscController::class, 'lang']);
+    Route::put('lang/{lang}', [UsersController::class, 'lang']);
+
+    //Route::get('user/{id}', [UsersController::class, 'index'])->where('id', '[0-9]+')->middleware(['check.role']);
+    //Route::put('user/{id}', [UsersController::class, 'update'])->where('id', '[0-9]+')->middleware(['check.role']);
+    //Route::delete('user/{id}', [UsersController::class, 'destroy'])->where('id', '[0-9]+')->middleware(['check.role']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', [AuthController::class, 'login'])->name('login');
 });

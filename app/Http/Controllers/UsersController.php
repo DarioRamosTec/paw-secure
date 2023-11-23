@@ -59,7 +59,9 @@ class UsersController extends Controller
     public function lang(Request $request, string $lang = null) {
         if (in_array($lang, ['en', 'es'])) {
             App::setLocale($lang);
-            $request->user()->lang = $lang;
+            $user = User::find($request->user()->id);
+            $user->lang = $lang;
+            $user->save();
             return response()->json([
                 "msg" => __('paw.langsuccess', ['lang' => $lang ])
             ], 202);
@@ -72,10 +74,12 @@ class UsersController extends Controller
 
     public function login (Request $request) {
         $content = new UserValidation();
-        $content->checkLogin($request);
+        $error = $content->checkLogin($request);
+        if ($error != null) {return $error;}
 
         $user = User::where([['password', $request->password], ['email', $request->email]])->get();
         if ($user == null)
+            $content->setLang();
             return response()->json([
                 "msg" => __('paw.usernotlogin')
             ], 404);
