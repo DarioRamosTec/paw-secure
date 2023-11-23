@@ -13,17 +13,17 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 
 class UsersController extends Controller
-{
+{   
     public function index (int $id = null) {
         $user = User::find($id);
         if ($user) {
             return response()->json([
-                "msg"   => "Usuario encontrado",
-                "data"  => $user->setHidden(['created_at', 'updated_at'])
+                "msg"   => __('paw.found'),
+                "data"  => $user->setHidden(['role', 'time_verification', 'created_at', 'updated_at'])
             ], 202);
         } else {
             return response()->json(
-                [ "msg" => "No se encontró el usuario solicitado."]
+                [ "msg" => __('paw.usernotfound')]
             , 404);
         }
     }
@@ -43,7 +43,7 @@ class UsersController extends Controller
 
         return response()->json([
             "msg"   => "Se creó un usuario, pero, aún no ha sido activado.",
-            "data"  => collect($user)->except(['id', 'role_id', 'time_verification', 'created_at', 'updated_at'])
+            "data"  => collect($user)->except(['id', 'role', 'time_verification', 'created_at', 'updated_at'])
         ], 202);
     }
 
@@ -81,7 +81,7 @@ class UsersController extends Controller
             $user[0]->save();
             return response()->json([
                 "msg"   => "Se ha actualizado el usuario.",
-                "data"  => collect($user[0])->except(['id', 'role_id', 'time_verification', 'created_at', 'updated_at'])
+                "data"  => collect($user[0])->except(['id', 'role', 'time_verification', 'created_at', 'updated_at'])
             ], 200);
         } else {
             return response()->json([

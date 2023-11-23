@@ -17,8 +17,8 @@ class CheckRole
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-        $role_id = auth()->user()->role_id;
-        if ($role_id == 1) {
+        $role = auth()->user()->role;
+        if ($role == 1) {
             return $response;
         } else {
             abort(406, "No estás permitido para esta acción.");

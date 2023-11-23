@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'is_active' => true,
             'password' => Hash::make('1234567890'),
-            'role_id' => 1,
+            'role' => 1,
         ]);
     }
 }

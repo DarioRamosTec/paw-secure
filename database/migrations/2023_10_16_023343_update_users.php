@@ -19,7 +19,7 @@ return new class extends Migration
         ]);
 
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('role_id')->default(2)->references('id')->on('roles');
+            $table->foreignId('role')->default(2)->references('id')->on('roles');
         });
 
         Artisan::call('db:seed', [
@@ -35,7 +35,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
+            $table->dropForeign(['role']);
         });
     }
 };

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MiscController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 /*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });*/
+
+Route::controller(MiscController::class)->prefix('v1')->group(function () {
+    Route::post('/lang/{lang}', 'lang');
+});
 
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
     Route::post('/register', 'store');
