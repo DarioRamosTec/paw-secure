@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Space;
+use Illuminate\Support\Facades\Validator;
+
+class SpaceController extends Controller
+{
+    public function index()
+    {
+        $spaces = Space::all();
+
+        return response()->json(["msg" => "Espacios encontrados satisfactoriamente!!", "data" => $spaces], 200);
+    }
+
+    public function store(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            "user" => 'required|exists:users,id',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(["errors" => $validate->errors(), "msg" => "Errores de validación"], 422);
+        }
+
+        $space = new Space();
+        $space->user_id = $request->input('user');
+        $space->save();
+
+        return response()->json(["msg" => "Espacio agregado", "data" => $space], 201);
+    }
+
+    public function show($id)
+    {
+        $space = Space::find($id);
+
+        if ($space) {
+            return response()->json(["msg" => "Espacio encontrado satisfactoriamente!!", "data" => $space], 200);
+        }
+
+        return response()->json(["msg" => "Espacio no encontrado"], 404);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validate = Validator::make($request->all(), [
+            "user" => 'required|exists:users,id',
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json(["errors" => $validate->errors(), "msg" => "Errores de validación"], 422);
+        }
+
+        $space = Space::find($id);
+
+        if ($space) {
+            $space->user_id = $request->input('user');
+            $space->save();
+            return response()->json(["msg" => "Datos del espacio actualizados satisfactoriamente!!", "data" => $space], 200);
+        }
+
+        return response()->json(["msg" => "Espacio no encontrado"], 404);
+    }
+
+    public function destroy($id)
+    {
+        $space = Space::find($id);
+
+        if ($space) {
+            $space->delete();
+            return response()->json(["msg" => "Espacio borrado", "data" => $space], 200);
+        }
+
+        return response()->json(["msg" => "Espacio no encontrado"], 404);
+    }
+}
