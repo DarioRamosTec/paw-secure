@@ -12,7 +12,7 @@
 // Adafruit.io setup
 #define AIO_SERVER      "io.adafruit.com"
 #define AIO_SERVERPORT  1883
-#define AIO_USERNAME    ""
+#define AIO_USERNAME    "PawSecure"
 #define AIO_KEY         ""
 #define AIO_GROUP       ""
 
