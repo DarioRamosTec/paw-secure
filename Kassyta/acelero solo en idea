@@ -1,0 +1,44 @@
+#include <Wire.h>
+#include <MPU6050.h>
+
+MPU6050 mpu;
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();
+  mpu.initialize();
+  
+  // Verifica si el sensor está conectado correctamente
+  if (!mpu.testConnection()) {
+    Serial.println("Error al conectar con el MPU6050. Asegúrate de que está conectado correctamente.");
+    while (1);
+  }
+}
+
+void loop() {
+  // Lee los datos del acelerómetro y el giroscopio
+  mpu.getMotion6();
+  
+  // Obtiene los valores de aceleración en los ejes x, y, z
+  int16_t ax = mpu.getAccelerationX();
+  int16_t ay = mpu.getAccelerationY();
+  int16_t az = mpu.getAccelerationZ();
+  
+  // Obtiene los valores de velocidad angular en los ejes x, y, z
+  int16_t gx = mpu.getRotationX();
+  int16_t gy = mpu.getRotationY();
+  int16_t gz = mpu.getRotationZ();
+
+  // Imprime los valores en el monitor serial
+  Serial.print("Aceleración: ");
+  Serial.print("X = "); Serial.print(ax);
+  Serial.print(" | Y = "); Serial.print(ay);
+  Serial.print(" | Z = "); Serial.println(az);
+
+  Serial.print("Velocidad angular: ");
+  Serial.print("X = "); Serial.print(gx);
+  Serial.print(" | Y = "); Serial.print(gy);
+  Serial.print(" | Z = "); Serial.println(gz);
+  
+  delay(500);  // Puedes ajustar el intervalo según tus necesidades
+}
