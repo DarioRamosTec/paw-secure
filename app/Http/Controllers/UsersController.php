@@ -30,6 +30,10 @@ class UsersController extends Controller
     }
 
     public function store (Request $request) {
+        if (in_array($request->lang, ['en', 'es'])) {
+            App::setLocale($request->lang);
+        }
+        
         $content = new UserValidation();
         $error = $content->checkSignUp($request);
         if ($error != null) {return $error;}
