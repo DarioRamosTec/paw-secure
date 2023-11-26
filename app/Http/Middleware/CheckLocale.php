@@ -17,6 +17,9 @@ class CheckLocale
      */
     public function handle(Request $request, Closure $next)
     {
+        if ($request->user() == null) {
+            abort(401, __('paw.401'));
+        }
         App::setLocale($request->user()->getLocale());
         return $next($request);
     }

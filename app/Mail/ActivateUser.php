@@ -83,10 +83,11 @@ class ActivateUser extends Mailable
             Attachment::fromStorageDisk('s3', '/path/to/file')
                 ->as('name.pdf')
                 ->withMime('application/pdf'),
-            */
+            
             Attachment::fromPath('https://i1.sndcdn.com/artworks-zFF6phNX9B1m1zhJ-V4Zu7A-t500x500.jpg')
                     ->as('yeojin.jpg')
                     ->withMime('image/jpeg'),
+                    */
         ];
     }
 }

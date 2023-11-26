@@ -10,5 +10,6 @@ return [
     'errorsfound' => 'There is a problem.',
     'usercreated' => "The user was created, but, it isn't activated yet.",
     'usernotlogin' => "The email or the password are incorrect.",
-    'useractivated' => "The email: :email was activated."
+    'useractivated' => "The email: :email was activated.",
+    '401' => "You must login to access this information",
 ];

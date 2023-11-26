@@ -21,7 +21,7 @@ class CheckRole
         if ($role == 1) {
             return $response;
         } else {
-            abort(406, "No estás permitido para esta acción.");
+            abort(401, __('paw.401'));
         }
     }
 }
