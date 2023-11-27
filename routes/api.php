@@ -23,8 +23,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
     Route::post('/register', 'store');
-    Route::get('/activate/{email}', 'activate')
-    ->name('activating')->middleware('signed');
 });
 
 Route::group([

@@ -7,4 +7,5 @@ return [
     'activate_body' => "Ahora, es tiempo de activar tu cuenta. Presiona el enlace siguiente y estarás listo para empezar.",
     'activate_conclusion' => "¡Hay mucho que hacer así que empezemos!",
     'activate_signature' => "- PawSecure",
+    'activate_subject' => "Activa tu cuenta",
 ];

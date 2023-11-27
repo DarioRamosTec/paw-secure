@@ -1,8 +1,0 @@
-<div style="width: 100%; height: 100%; position: relative; background: white">
-    <img src="{{ $message->embed($pathToImage) }}" alt="" role="presentation" style="height: 40px; background-color: rgb(243, 247, 252);">
-    <div style="width: 167px; height: 25px; left: 243px; top: 104px; position: absolute; text-align: center; color: black; font-size: 16px; font-family: Helvetica; font-weight: 400; word-wrap: break-word">{{ __('email.activate_welcome') }}</div>
-    <div style="width: 600px; height: 25px; left: 27px; top: 148px; position: absolute; text-align: center; color: black; font-size: 15px; font-family: Helvetica; font-weight: 300; word-wrap: break-word">{{ __('activate_introduction') }}<br/>{{ __('activate_body') }}</div>
-    <div style="width: 600px; height: 25px; left: 24px; top: 201px; position: absolute; text-align: center; color: black; font-size: 15px; font-family: Helvetica; font-weight: 400; word-wrap: break-word">{{ $activateUrl }}</div>
-    <div style="width: 600px; height: 25px; left: 24px; top: 254px; position: absolute; text-align: center; color: black; font-size: 15px; font-family: Helvetica; font-weight: 300; word-wrap: break-word">{{ __('activate_conclusion') }}</div>
-    <div style="width: 600px; height: 25px; left: 24px; top: 279px; position: absolute; text-align: center; color: black; font-size: 14px; font-family: Helvetica; font-weight: 300; word-wrap: break-word; font-style: italic;">{{ __('activate_signature') }}</div>
-</div>

@@ -22,7 +22,7 @@ class ActivateUser extends Mailable
      */
     protected $user;
     protected $signedUrl;
-    public $pathToImage = 'https://i1.sndcdn.com/artworks-zFF6phNX9B1m1zhJ-V4Zu7A-t500x500.jpg';
+    public $pathToImage = '\storage\img\logo.png';
 
     /**
      * Create a new message instance.
@@ -44,7 +44,7 @@ class ActivateUser extends Mailable
     {
         return new Envelope(
             //from: new Address('tomorrowismyday23@gmail.com', 'GrrrAgent'),
-            subject: 'Activate your account',
+            subject: __('email.activate_subject'),
         );
     }
 
@@ -62,10 +62,10 @@ class ActivateUser extends Mailable
             html: 'welcome',
             text: 'welcome',
             */
-            html: 'emails_activate',
-            text: 'emails_activate-text',
+            html: 'emails.emails_activate',
+            text: 'emails.emails_activate-text',
             with: [
-                'userName' => $this->user->name,
+                'name' => $this->user->name,
                 'activateUrl' => $this->signedUrl,
             ]
         );

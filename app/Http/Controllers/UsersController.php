@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\View;
 
 class UsersController extends Controller
 {   
@@ -94,21 +95,18 @@ class UsersController extends Controller
         if (!$request->hasValidSignature()) {
             abort(401);
         }
-
+        
         $user = User::where('email', $email)->get();
         if ($user != null) {
             $user[0]->is_active = true;
             $user[0]->save();
             App::setLocale($user[0]->lang);
 
-            return response()->json([
-                "msg"   => __('paw.useractivated', ['email' => $email]),
-                "data"  => collect($user[0])->only(['name', 'email'])
-            ], 200);
+            return View::make('activate', [
+                'name' => $user[0]->name,
+            ]);
         } else {
-            return response()->json([
-                "msg"   => __('paw.usernotfound')
-            ], 404);
+            return View::make('404');
         }
     }
 }

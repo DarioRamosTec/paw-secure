@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Thanks for joining!</title>
+        <title>404 - Not Found</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -47,8 +47,11 @@
                     </defs>
                 </svg>
             </div>
+            <div style="text-align: center; color: black; font-size: 32px; font-weight: 300; word-wrap: break-word">{{__('view.404_title')}}</div>
+            <div style="text-align: center; color: black; font-size: 18px; font-weight: 300; word-wrap: break-word">{{__('view.404_body')}}</div>
+            <div style="height: 75px;"></div>
+            <div style="text-align: center; color: black; font-size: 16px; font-weight: 300; word-wrap: break-word">{{__('view.close_window')}}</div>
+            <div style="text-align: center; color: black; font-size: 12px; font-weight: 300; word-wrap: break-word">₍˶ • . • ⑅₎</div>
         </div>
-        <p>{{ __('view.activate_title') }}</p>
-        <div style="text-align: center; color: black; font-size: 32px; font-weight: 300; word-wrap: break-word">{{ __('view.activate_title') }}</div>
     </body>
 </html>

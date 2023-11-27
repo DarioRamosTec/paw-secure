@@ -47,8 +47,11 @@
                     </defs>
                 </svg>
             </div>
+            <div style="text-align: center; color: black; font-size: 32px; font-weight: 300; word-wrap: break-word">{{ __('view.activate_title', ['name' => $name]) }}</div>
+            <div style="text-align: center; color: black; font-size: 18px; font-weight: 300; word-wrap: break-word">{{ __('view.press_verify') }}</div>
+            <div style="height: 75px;"></div>
+            <div style="text-align: center; color: black; font-size: 16px; font-weight: 300; word-wrap: break-word">{{ __('view.close_window') }}</div>
+            <div style="text-align: center; color: black; font-size: 12px; font-weight: 300; word-wrap: break-word">₍ ˶ᵔ ᵕ ᵔ˶ ₎</div>
         </div>
-        <p>{{ __('view.activate_title') }}</p>
-        <div style="text-align: center; color: black; font-size: 32px; font-weight: 300; word-wrap: break-word">{{ __('view.activate_title') }}</div>
     </body>
 </html>
