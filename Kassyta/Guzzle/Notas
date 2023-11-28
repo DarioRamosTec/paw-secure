@@ -1,0 +1,10 @@
+1-En el imsomnia la ruta es
+https:://io.adafruit.com/api/v2/ricardo_sanchz/feeds/welcome-feed/data
+
+https:127.0.0.1:8000/api/v2/adafruit
+
+2-Se tiene que dar click a Headers 
+header sera : X-AIO-Key
+value sera: TOKEN DE ADAFRUIT
+
+3- Verbo GET
