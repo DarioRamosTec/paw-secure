@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('owners', function (Blueprint $table) {
+        Schema::create('pets', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('middle_name')->nullable();
-            $table->string('last_name');
-            $table->enum('gender', ['M', 'F','O']);
-            $table->unsignedInteger('age');
+            $table->string('nickname');
+            $table->string('race');
+            $table->enum('sex', ['M', 'F']);
+            $table->integer('icon');
+            $table->string('image')->nullable();
+            $table->foreignId('animal');
+            $table->foreignId('user');
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('owners');
+        Schema::dropIfExists('pets');
     }
 };

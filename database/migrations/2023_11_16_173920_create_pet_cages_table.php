@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pet_cages', function (Blueprint $table) {
+        Schema::create('pet_spaces', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cage_id');
-            $table->unsignedBigInteger('pet_id');
+            $table->unsignedBigInteger('space');
+            $table->unsignedBigInteger('pet');
             $table->timestamps();
-
-            $table->foreign('cage_id')->references('id')->on('cages');
-            $table->foreign('pet_id')->references('id')->on('pets');
         });
     }
 

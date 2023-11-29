@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cages', function (Blueprint $table) {
+        Schema::create('spaces', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('owner');
+            $table->foreignId('user');
             $table->timestamps();
-
-            $table->foreign('owner')->references('id')->on('owners');
         });
     }
 
