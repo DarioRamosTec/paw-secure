@@ -22,7 +22,7 @@ class ActivateUser extends Mailable
      */
     protected $user;
     protected $signedUrl;
-    public $pathToImage = '\storage\img\logo.png';
+    public $pathToImage = '/storage/img/logo.png';
 
     /**
      * Create a new message instance.
