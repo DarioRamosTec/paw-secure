@@ -129,7 +129,7 @@ class UserValidation {
             return response()->json([
                 "msg" => __('paw.errorsfound'),
                 "errors" => $validate->errors()
-            ], 422);
+            ], 400);
             return false;
         } else {
             $this->image        = $request->image;
