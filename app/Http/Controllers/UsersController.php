@@ -155,7 +155,7 @@ class UserValidation {
             return response()->json([
                 "msg" => __('paw.errorsfound'),
                 "errors" =>$validate->errors()
-            ], 422);
+            ], 400);
         }
         
     }
@@ -173,7 +173,7 @@ class UserValidation {
             return response()->json([
                 "msg" => __('paw.errorsfound'),
                 "errors" =>$validate->errors()
-            ], 422);
+            ], 400);
         } else {
             $this->lang         = $request->lang;
             $this->name         = $request->name;
