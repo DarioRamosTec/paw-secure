@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
+use App\Http\Controllers\AuthController;
 
 class UsersController extends Controller
 {   
@@ -129,7 +130,7 @@ class UserValidation {
             return response()->json([
                 "msg" => __('paw.errorsfound'),
                 "errors" => $validate->errors()
-            ], 422);
+            ], 400);
             return false;
         } else {
             $this->image        = $request->image;
@@ -155,7 +156,7 @@ class UserValidation {
             return response()->json([
                 "msg" => __('paw.errorsfound'),
                 "errors" =>$validate->errors()
-            ], 422);
+            ], 400);
         }
         
     }
@@ -173,7 +174,7 @@ class UserValidation {
             return response()->json([
                 "msg" => __('paw.errorsfound'),
                 "errors" =>$validate->errors()
-            ], 422);
+            ], 400);
         } else {
             $this->lang         = $request->lang;
             $this->name         = $request->name;
