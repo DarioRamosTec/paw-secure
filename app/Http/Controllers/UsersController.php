@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
+use App\Http\Controllers\AuthController;
 
 class UsersController extends Controller
 {   
