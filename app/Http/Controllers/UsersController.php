@@ -110,6 +110,39 @@ class UsersController extends Controller
             return View::make('404');
         }
     }
+
+    public function feed (Request $request) {
+        $spaces = $request->user()->spaces;
+        $count = count($spaces);
+        if ($count == 0) {
+            return response()->json([
+                "msg" => __('paw.anycages'),
+                "data" => []
+            ], 206);
+        } else {
+            return response()->json([
+                "msg" => trans_choice('paw.foundcages', $count),
+                "data" => $spaces
+            ], 200);
+        }
+    }
+
+    public function pets (Request $request) {
+        $pets = $request->user()->pets;
+        $count = count($pets);
+        if ($count == 0) {
+            return response()->json([
+                "msg" => __('paw.anypets'),
+                "data" => []
+            ], 206);
+        } else {
+            return response()->json([
+                "msg" => trans_choice('paw.foundpets', $count),
+                "data" => $pets
+            ], 200);
+        }
+    }
+    
 }
 
 class UserValidation {
@@ -123,7 +156,7 @@ class UserValidation {
             'genre'         => [new Enum(GenreEnum::class)],
             "password"      => "required|min:4|max:256",
             "image"         => "min:3",
-            "birthday"      => "date"
+            "birthday"      => "required|date_format:m/d/Y"
         ]);
 
         if ($validate->fails()) {
@@ -141,7 +174,7 @@ class UserValidation {
             $this->email        = $request->email;
             $this->genre        = $request->genre;
             $this->password     = $request->password;
-            $this->birthday      = $request->birthday;
+            $this->birthday     = date("d-m-Y", strtotime($request->birthday));
             return true;
         }
     }

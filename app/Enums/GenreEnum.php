@@ -3,7 +3,7 @@
 namespace App\Enums;
 
 enum GenreEnum: string {
-    case Male = 'male';
-    case Female = 'female';
+    case Man = 'man';
+    case Woman = 'woman';
     case Other = 'other';
 }

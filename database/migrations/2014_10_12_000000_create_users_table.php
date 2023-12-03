@@ -23,7 +23,7 @@ return new class extends Migration
             $table->timestamp('time_verification')->nullable();
             $table->string('middle_name', 40)->nullable();
             $table->string('last_name', 40)->nullable();
-            $table->enum('genre', ['male', 'female', 'other'])->nullable();
+            $table->string('genre')->nullable();
             $table->string('password', 256);
             $table->date('birthday')->nullable();
             //$table->string('country', 40)->nullable();

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MiscController;
+use App\Http\Controllers\PetsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +34,13 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('me', [AuthController::class, 'me']);
     Route::put('lang/{lang}', [UsersController::class, 'lang']);
-
-    //Route::get('user/{id}', [UsersController::class, 'index'])->where('id', '[0-9]+')->middleware(['check.role']);
-    //Route::put('user/{id}', [UsersController::class, 'update'])->where('id', '[0-9]+')->middleware(['check.role']);
-    //Route::delete('user/{id}', [UsersController::class, 'destroy'])->where('id', '[0-9]+')->middleware(['check.role']);
+    Route::get('feed', [UsersController::class, 'feed']);
+    Route::post('pet', [PetsController::class, 'store']);
+    Route::put('pet/{id}', [PetsController::class, 'update'])->where('id', '[0-9]+');
+    Route::get('pet/{id}', [PetsController::class, 'index'])->where('id', '[0-9]+');
+    Route::get('pets', [UsersController::class, 'pets']);
+    Route::post('space', [PetsController::class, 'store']);
+    //->middleware(['check.role']);
 });
 
 Route::group([

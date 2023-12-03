@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
             $table->string('nickname');
-            $table->string('race');
-            $table->enum('sex', ['M', 'F']);
+            $table->string('race')->nullable();
+            $table->string('sex')->nullable();
             $table->integer('icon');
+            $table->date('birthday');
             $table->string('image')->nullable();
             $table->foreignId('animal');
             $table->foreignId('user');

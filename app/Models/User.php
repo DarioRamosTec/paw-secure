@@ -28,4 +28,13 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->lang;
     }
+
+    public function pets() {
+        return $this->hasMany(Pet::class, 'user');
+    }
+
+    public function spaces() {
+        return $this->hasMany(Space::class, 'user');
+    }
+
 }
