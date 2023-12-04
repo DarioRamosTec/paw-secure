@@ -18,4 +18,6 @@ class Space extends Model
     {
         return $this->belongsTo(User::class, 'user');
     }
+
+    protected $with = ['pets'];
 }

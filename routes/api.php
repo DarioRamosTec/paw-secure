@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MiscController;
 use App\Http\Controllers\PetsController;
+use App\Http\Controllers\SpacesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\PetSpacesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,14 +35,16 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('me', [AuthController::class, 'me']);
+    
     Route::put('lang/{lang}', [UsersController::class, 'lang']);
-    Route::get('feed', [UsersController::class, 'feed']);
+    Route::get('spaces', [UsersController::class, 'spaces']);
+    Route::get('pets', [UsersController::class, 'pets']);
     Route::post('pet', [PetsController::class, 'store']);
     Route::put('pet/{id}', [PetsController::class, 'update'])->where('id', '[0-9]+');
     Route::get('pet/{id}', [PetsController::class, 'index'])->where('id', '[0-9]+');
-    Route::get('pets', [UsersController::class, 'pets']);
-    Route::post('space', [PetsController::class, 'store']);
-    //->middleware(['check.role']);
+    Route::post('space', [SpacesController::class, 'store']);
+    Route::post('spaces/{id}', [PetSpacesController::class, 'store'])->where('id', '[0-9]+');
+    Route::put('spaces/{id}', [PetSpacesController::class, 'update'])->where('id', '[0-9]+');
 });
 
 Route::group([

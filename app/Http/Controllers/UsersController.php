@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\AuthController;
+use App\Models\Pet;
+use App\Models\PetSpace;
+use App\Models\Space;
 
 class UsersController extends Controller
 {   
@@ -111,7 +114,7 @@ class UsersController extends Controller
         }
     }
 
-    public function feed (Request $request) {
+    public function spaces (Request $request) {
         $spaces = $request->user()->spaces;
         $count = count($spaces);
         if ($count == 0) {
@@ -141,22 +144,21 @@ class UsersController extends Controller
                 "data" => $pets
             ], 200);
         }
-    }
-    
+    }    
 }
 
 class UserValidation {
     protected $name, $email, $middle_name, $last_name, $genre, $password, $birthday, $image, $lang;
 
-    public function checkUpdate(Request $request) {
+    public function checkUpdate(Request $request, $user) {
         $validate = Validator::make($request->all(), [
-            "name"          => "required|min:3|max:40",
+            "name"          => "min:3|max:40",
             "middle_name"   => "min:2|max:40",
-            "last_name"     => "required|min:2|max:40",
+            "last_name"     => "min:2|max:40",
             'genre'         => [new Enum(GenreEnum::class)],
-            "password"      => "required|min:4|max:256",
+            "password"      => "min:4|max:256",
             "image"         => "min:3",
-            "birthday"      => "required|date_format:m/d/Y"
+            "birthday"      => "date_format:m/d/Y"
         ]);
 
         if ($validate->fails()) {
@@ -164,18 +166,16 @@ class UserValidation {
                 "msg" => __('paw.errorsfound'),
                 "errors" => $validate->errors()
             ], 400);
-            return false;
         } else {
-            $this->image        = $request->image;
-            $this->lang         = $request->lang;
-            $this->name         = $request->name;
-            $this->middle_name  = $request->middle_name;
-            $this->last_name    = $request->last_name;
-            $this->email        = $request->email;
-            $this->genre        = $request->genre;
-            $this->password     = $request->password;
-            $this->birthday     = date("d-m-Y", strtotime($request->birthday));
-            return true;
+            $this->image        = $request->get('image', $user->image);
+            $this->lang         = $request->get('lang', $user->lang);
+            $this->name         = $request->get('name', $user->name);
+            $this->middle_name  = $request->get('middle_name', $user->middle_name);
+            $this->last_name    = $request->get('last_name', $user->last_name);
+            $this->email        = $request->get('email', $user->email);
+            $this->genre        = $request->get('genre', $user->genre);
+            $this->password     = $request->get('password', $user->password);
+            $this->birthday     = date("d-m-Y", strtotime($request->get('birthday', $user->birthday)));
         }
     }
 
@@ -200,7 +200,7 @@ class UserValidation {
             "password"          => "required|min:4|max:256",
             "password_again"    => "required|min:4|max:256|same:password",
             "name"              => "required|min:3|max:40",
-            "lang"              => "required",
+            "lang"              => "required|min:2",
         ]);
 
         if ($validate->fails()) {
@@ -225,15 +225,15 @@ class UserValidation {
     }
 
     public function update(&$model) {
-        $model->name  = $this->name;
-        $model->lang  = $this->lang;
-        $model->image  = $this->image;
+        $model->name        = $this->name;
+        $model->lang        = $this->lang;
+        $model->image       = $this->image;
         $model->middle_name = $this->middle_name;
         $model->last_name   = $this->last_name;
         $model->email       = $this->email;
         $model->genre       = $this->genre;
         $model->password    = Hash::make($this->password);
-        $model->birthday     = $this->birthday;
+        $model->birthday    = $this->birthday;
         $model->save();
     }
 
