@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sensor_types', function (Blueprint $table) {
+        Schema::create('sensor_type', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->string('name');
             $table->string('details');
             $table->string('unity');
             $table->timestamps();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sensor_types');
+        Schema::dropIfExists('sensor_type');
     }
 };

@@ -6,6 +6,7 @@ use App\Http\Controllers\PetsController;
 use App\Http\Controllers\SpacesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\PetSpacesController;
+use App\Http\Controllers\SensorsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 });*/
 
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
-    Route::post('/register', 'store');
+    Route::post('register', 'store');
 });
 
 Route::group([
@@ -45,6 +46,8 @@ Route::group([
     Route::post('space', [SpacesController::class, 'store']);
     Route::post('spaces/{id}', [PetSpacesController::class, 'store'])->where('id', '[0-9]+');
     Route::put('spaces/{id}', [PetSpacesController::class, 'update'])->where('id', '[0-9]+');
+
+    Route::get('space/{id}/presence', [SensorsController::class, 'presence'])->where('id', '[0-9]+');
 });
 
 Route::group([

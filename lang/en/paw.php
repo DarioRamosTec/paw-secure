@@ -17,6 +17,7 @@ return [
     "foundcages" => "{1}This is your unique cage.|[2,*]This are your spaces.",
     "logout" => "Successfully logged out.",
     "spacenotcreated" => "The space wasn't created.",
+    "spacecreated" => "The space was made!",
     "petnotcreated" => "You cannot save this pet.",
     "petcreated" => "Your was successfully created!",
     "foundpets" => "{1}This is your pet.|[2,*]This are your pets.",
@@ -28,5 +29,8 @@ return [
     "petspacespetnotfound" => "You need to select valid pets.",
     "petspacecreated" => "You're space has been created!",
     "petspaceupdated" => "You're space has been updated!",
-    "petspacesempty" => "You cannot edit a space that is empty."
+    "petspacesempty" => "You cannot edit a space that is empty.",
+    "sensorinfo" => "This is the :sensor's information.",
+    "iovalidate" => "The code of IO cannot been validated.",
+    "ioerror" => "We cannot communicate with the IO server."
 ];

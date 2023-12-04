@@ -32,12 +32,16 @@ return new class extends Migration
         });    
         
         Schema::table('sensors', function (Blueprint $table) {
-            $table->foreign('sensor_type')->references('id')->on('sensor_types');
+            $table->foreign('sensor_type')->references('id')->on('sensor_type');
             $table->foreign('space')->references('id')->on('spaces');
         }); 
 
         Artisan::call('db:seed', [
             '--class' => 'AnimalSeeder'
+        ]);
+
+        Artisan::call('db:seed', [
+            '--class' => 'SensorTypeSeeder'
         ]);
 
     }

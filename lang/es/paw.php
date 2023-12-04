@@ -18,6 +18,7 @@ return [
     "logout" => "Se ha cerrado sesión.",
     "spacenotcreated" => "El espacio no ha sido creado.",
     "petnotcreated" => "No se puede guardar esta mascota.",
+    "spacecreated" => "¡El espacio fue hecho!",
     "petcreated" => "¡Tu mascota ha sido creada!",
     "foundpets" => "{1}Esta es tu mascota.|[2,*]Estas son tus mascotas.",
     "anypets" => "No tienes ninguna mascota.",
@@ -28,5 +29,8 @@ return [
     "petspacespetnotfound" => "Necesitas seleccionar mascotas válidas.",
     "petspacecreated" => "¡Tu espacio fue creado!",
     "petspaceupdated" => "¡Tu espacio fue actualizado!",
-    "petspacesempty" => "Quieres actualizar un espacio sin animales."
+    "petspacesempty" => "Quieres actualizar un espacio sin animales.",
+    "sensorinfo" => "Esta es la información de tu sensor de :sensor.",
+    "iovalidate" => "El código de IO no puede ser validado.",
+    "ioerror" => "No se puede comunicar con el servidor IO."
 ];
