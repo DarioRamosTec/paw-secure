@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MiscController;
-use App\Http\Controllers\MovementController;
+use App\Http\Controllers\PetsController;
+use App\Http\Controllers\SpacesController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\PetSpacesController;
+use App\Http\Controllers\SensorsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 });*/
 
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
-    Route::post('/register', 'store');
+    Route::post('register', 'store');
 });
 
 Route::group([
@@ -33,10 +36,18 @@ Route::group([
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('me', [AuthController::class, 'me']);
+    
     Route::put('lang/{lang}', [UsersController::class, 'lang']);
-    //Route::get('user/{id}', [UsersController::class, 'index'])->where('id', '[0-9]+')->middleware(['check.role']);
-    //Route::put('user/{id}', [UsersController::class, 'update'])->where('id', '[0-9]+')->middleware(['check.role']);
-    //Route::delete('user/{id}', [UsersController::class, 'destroy'])->where('id', '[0-9]+')->middleware(['check.role']);
+    Route::get('spaces', [UsersController::class, 'spaces']);
+    Route::get('pets', [UsersController::class, 'pets']);
+    Route::post('pet', [PetsController::class, 'store']);
+    Route::put('pet/{id}', [PetsController::class, 'update'])->where('id', '[0-9]+');
+    Route::get('pet/{id}', [PetsController::class, 'index'])->where('id', '[0-9]+');
+    Route::post('space', [SpacesController::class, 'store']);
+    Route::post('spaces/{id}', [PetSpacesController::class, 'store'])->where('id', '[0-9]+');
+    Route::put('spaces/{id}', [PetSpacesController::class, 'update'])->where('id', '[0-9]+');
+
+    Route::get('space/{id}/presence', [SensorsController::class, 'presence'])->where('id', '[0-9]+');
 });
 
 Route::group([

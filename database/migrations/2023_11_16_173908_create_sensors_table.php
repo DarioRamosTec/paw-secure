@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sensors', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->dateTime('time');
             $table->double('measure');
             $table->unsignedBigInteger('sensor_type');
             $table->unsignedBigInteger('space');

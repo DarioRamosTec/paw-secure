@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('spaces', function (Blueprint $table) {
+        Schema::create('sensor_type', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user');
+            $table->string('name');
+            $table->string('details');
+            $table->string('unity');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cages');
+        Schema::dropIfExists('sensor_type');
     }
 };

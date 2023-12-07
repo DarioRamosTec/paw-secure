@@ -26,15 +26,23 @@ return new class extends Migration
             $table->foreign('user')->references('id')->on('users');
         });
         
-        Schema::table('pet_spaces', function (Blueprint $table) {
+        Schema::table('pet_space', function (Blueprint $table) {
             $table->foreign('space')->references('id')->on('spaces');
             $table->foreign('pet')->references('id')->on('pets');
         });    
         
         Schema::table('sensors', function (Blueprint $table) {
-            $table->foreign('sensor_type')->references('id')->on('sensor_types');
+            $table->foreign('sensor_type')->references('id')->on('sensor_type');
             $table->foreign('space')->references('id')->on('spaces');
         }); 
+
+        Artisan::call('db:seed', [
+            '--class' => 'AnimalSeeder'
+        ]);
+
+        Artisan::call('db:seed', [
+            '--class' => 'SensorTypeSeeder'
+        ]);
 
     }
 
@@ -57,7 +65,7 @@ return new class extends Migration
             $table->dropForeign(['user']);
         });
 
-        Schema::table('pet_spaces', function (Blueprint $table) {
+        Schema::table('pet_space', function (Blueprint $table) {
             $table->dropForeign(['space', 'pet']);
         });    
         
