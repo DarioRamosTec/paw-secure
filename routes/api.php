@@ -25,6 +25,10 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });*/
 
+Route::prefix('v1')->group(function () {
+    Route::get('/{lang?}', [MiscController::class, 'none'])->name('none');
+});
+
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
     Route::post('register', 'store');
 });
@@ -54,5 +58,5 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'v1/auth'
 ], function ($router) {
-    Route::get('login', [AuthController::class, 'login'])->name('login');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
 });

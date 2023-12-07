@@ -32,5 +32,6 @@ return [
     "petspacesempty" => "You cannot edit a space that is empty.",
     "sensorinfo" => "This is the :sensor's information.",
     "iovalidate" => "The code of IO cannot been validated.",
-    "ioerror" => "We cannot communicate with the IO server."
+    "ioerror" => "We cannot communicate with the IO server.",
+    "nothing" => "Nothing here."
 ];
