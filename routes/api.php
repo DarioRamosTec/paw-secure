@@ -25,10 +25,6 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 });*/
 
-Route::prefix('v1')->group(function () {
-    Route::get('/{lang?}', [MiscController::class, 'none'])->name('none');
-});
-
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
     Route::post('register', 'store');
 });
