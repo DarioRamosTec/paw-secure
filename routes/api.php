@@ -54,5 +54,5 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'v1/auth'
 ], function ($router) {
-    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::get('login', [AuthController::class, 'login'])->name('login');
 });
