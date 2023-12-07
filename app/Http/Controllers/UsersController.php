@@ -121,7 +121,7 @@ class UsersController extends Controller
             return response()->json([
                 "msg" => __('paw.anycages'),
                 "data" => []
-            ], 206);
+            ], 200);
         } else {
             return response()->json([
                 "msg" => trans_choice('paw.foundcages', $count),
@@ -137,7 +137,7 @@ class UsersController extends Controller
             return response()->json([
                 "msg" => __('paw.anypets'),
                 "data" => []
-            ], 206);
+            ], 200);
         } else {
             return response()->json([
                 "msg" => trans_choice('paw.foundpets', $count),
