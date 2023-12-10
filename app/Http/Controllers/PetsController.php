@@ -15,6 +15,10 @@ class PetsController extends Controller
         if ($error != null) {
             return $error;
         }
+        if ($request->image != null) {
+            $path = $request->file('image')->store('images', 's3');
+            $validation->pet->image = $path;
+        }
 
         $validation->save();
         return response()->json([
@@ -71,7 +75,7 @@ class PetValidation {
             "race"          => "min:2|max:15",
             'sex'           => [new Enum(SexEnum::class)],
             "icon"          => "required|integer",
-            "image"         => "min:3",
+            "image"         => "image|mimes:jpg,png,jpeg,gif|size:2048",
             "animal"        => "integer|required|exists:App\Models\Animal,id",
             "birthday"      => ["date_format:d/m/Y", "before_or_equal:".now()->format('Y-m-d')],
             "description"   => "required|min:5|max:45"
@@ -88,7 +92,7 @@ class PetValidation {
             $this->pet->race        = $request->race;
             $this->pet->sex         = $request->sex;
             $this->pet->icon        = $request->icon;
-            $this->pet->image       = $request->image;
+            //$this->pet->image       = $request->image;
             $this->pet->birthday    = date("Y-m-d", strtotime($request->birthday));
             $this->pet->animal      = $request->animal;
             $this->pet->description = $request->description;
