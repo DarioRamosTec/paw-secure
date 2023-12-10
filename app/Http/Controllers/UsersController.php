@@ -17,6 +17,7 @@ use App\Http\Controllers\AuthController;
 use App\Models\Pet;
 use App\Models\PetSpace;
 use App\Models\Space;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {   
@@ -161,7 +162,14 @@ class UsersController extends Controller
                 "data" => $pets
             ], 200);
         }
-    }    
+    }
+
+    public function mypets (Request $request, int $id) {
+        $mypet = auth()->user()->pets->find($id);
+        if ($mypet != null && $mypet->image != null) {
+            return Storage::disk('s3')->response($mypet->image);
+        }
+    }
 }
 
 class UserValidation {
