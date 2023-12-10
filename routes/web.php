@@ -17,7 +17,7 @@ use App\Http\Controllers\UsersController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
 
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
     Route::get('/activate/{email}', 'activate')
