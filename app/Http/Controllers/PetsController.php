@@ -72,9 +72,9 @@ class PetValidation {
             'sex'           => [new Enum(SexEnum::class)],
             "icon"          => "required|integer",
             "image"         => "min:3",
-            "animal"        => "required|exists:App\Models\Animal,id",
-            "birthday"      => "date_format:m/d/Y",
-            "description"   => "required|min:7|max:45"
+            "animal"        => "integer|required|exists:App\Models\Animal,id",
+            "birthday"      => ["date_format:d/m/Y", "before_or_equal:".now()->format('Y-m-d')],
+            "description"   => "required|min:5|max:45"
         ]);
 
         if ($validate->fails()) {

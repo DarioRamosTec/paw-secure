@@ -66,19 +66,36 @@ class UsersController extends Controller
     }
 
     public function lang(Request $request, string $lang = null) {
-        if (in_array($lang, ['en', 'es'])) {
-            App::setLocale($lang);
-            $user = User::find($request->user()->id);
-            $user->lang = $lang;
-            $user->save();
+        if ($request->isMethod('put')) {
+            if (in_array($lang, ['en', 'es'])) {
+                App::setLocale($lang);
+                $user = User::find($request->user()->id);
+                $user->lang = $lang;
+                $user->save();
+                return response()->json([
+                    "msg" => __('paw.langsuccess', ['lang' => $lang ])
+                ], 202);
+            }
             return response()->json([
-                "msg" => __('paw.langsuccess', ['lang' => $lang ])
-            ], 202);
-        }
-        return response()->json([
-            "msg" => __('paw.langfail', ['lang' => $lang ])
-        ], 404);
-        
+                "msg" => __('paw.langfail', ['lang' => $lang ])
+            ], 404);
+        } else if ($request->isMethod('get')) {
+            $lang = auth()->user()->lang;
+            if ($lang == null) {
+                return response()->json([
+                    "msg" => __('paw.notlang')
+                ], 404);
+            } else {
+                return response()->json([
+                    "msg" => __('paw.langfound', ['lang' => $lang ]),
+                    "data" => $lang
+                ], 200);
+            }
+        } else {
+            return response()->json([
+                "msg" => __('paw.routenothing')
+            ], 404);
+        }        
     }
 
     public function login (Request $request) {
