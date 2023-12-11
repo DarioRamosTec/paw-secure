@@ -30,7 +30,7 @@ class PetsController extends Controller
         $validation->save();
         return response()->json([
             "msg"   => __('paw.petcreated'),
-            "data"  => collect($validation->pet)->except(['created_at', 'updated_at'])
+            "data"  => [collect($validation->pet)->except(['created_at', 'updated_at'])]
         ], 201);
     }
 
