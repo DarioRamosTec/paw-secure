@@ -32,5 +32,9 @@ return [
     "petspacesempty" => "Quieres actualizar un espacio sin animales.",
     "sensorinfo" => "Esta es la información de tu sensor de :sensor.",
     "iovalidate" => "El código de IO no puede ser validado.",
-    "ioerror" => "No se puede comunicar con el servidor IO."
+    "ioerror" => "No se puede comunicar con el servidor IO.",
+    "nothing" => "Nada aquí.",
+    "routenothing" => "Esta ruta no retorna ningún valor.",
+    "notlang" => "No tienes un lenguaje definido.",
+    "langfound" => "Tu código de lenguaje es :lang.",
 ];

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pet;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
+use Storage;
 
 class PetsController extends Controller
 {
@@ -15,12 +17,21 @@ class PetsController extends Controller
         if ($error != null) {
             return $error;
         }
+        if ($request->image != null) {            
+            $link = 'images/'.auth()->user()->id.count(auth()->user()->pets).'.png';
+            $str = str_replace("\r\n", "", $request->image);
+            $str = str_replace("\n", "", $str);
+            $str = str_replace("\r", "", $str);
+            $imageContent = base64_decode($str);
+            Storage::disk('s3')->put($link, $imageContent);
+            $validation->pet->image = $link;
+        }
 
         $validation->save();
         return response()->json([
             "msg"   => __('paw.petcreated'),
-            "data"  => collect($validation->pet)->except(['created_at', 'updated_at'])
-        ], 202);
+            "data"  => [collect($validation->pet)->except(['created_at', 'updated_at'])]
+        ], 201);
     }
 
     public function update (Request $request, int $id) {
@@ -71,10 +82,10 @@ class PetValidation {
             "race"          => "min:2|max:15",
             'sex'           => [new Enum(SexEnum::class)],
             "icon"          => "required|integer",
-            "image"         => "min:3",
-            "animal"        => "required|exists:App\Models\Animal,id",
-            "birthday"      => "date_format:m/d/Y",
-            "description"   => "required|min:7|max:45"
+            "image"         => "max:2000000",
+            "animal"        => "integer|required|exists:App\Models\Animal,id",
+            "birthday"      => ["date_format:d/m/Y", "before_or_equal:".now()->format('Y-m-d')],
+            "description"   => "required|min:5|max:45"
         ]);
 
         if ($validate->fails()) {
@@ -88,7 +99,7 @@ class PetValidation {
             $this->pet->race        = $request->race;
             $this->pet->sex         = $request->sex;
             $this->pet->icon        = $request->icon;
-            $this->pet->image       = $request->image;
+            //$this->pet->image       = $request->image;
             $this->pet->birthday    = date("Y-m-d", strtotime($request->birthday));
             $this->pet->animal      = $request->animal;
             $this->pet->description = $request->description;

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MiscController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 
@@ -16,9 +17,13 @@ use App\Http\Controllers\UsersController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
 
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
     Route::get('/activate/{email}', 'activate')
     ->name('activating')->middleware('signed');
+});
+
+Route::group([], function () {
+    Route::get('/me/pets/{id}', [UsersController::class, 'mypets'])->middleware('auth');
 });

@@ -17,6 +17,7 @@ use App\Http\Controllers\AuthController;
 use App\Models\Pet;
 use App\Models\PetSpace;
 use App\Models\Space;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {   
@@ -66,19 +67,36 @@ class UsersController extends Controller
     }
 
     public function lang(Request $request, string $lang = null) {
-        if (in_array($lang, ['en', 'es'])) {
-            App::setLocale($lang);
-            $user = User::find($request->user()->id);
-            $user->lang = $lang;
-            $user->save();
+        if ($request->isMethod('put')) {
+            if (in_array($lang, ['en', 'es'])) {
+                App::setLocale($lang);
+                $user = User::find($request->user()->id);
+                $user->lang = $lang;
+                $user->save();
+                return response()->json([
+                    "msg" => __('paw.langsuccess', ['lang' => $lang ])
+                ], 202);
+            }
             return response()->json([
-                "msg" => __('paw.langsuccess', ['lang' => $lang ])
-            ], 202);
-        }
-        return response()->json([
-            "msg" => __('paw.langfail', ['lang' => $lang ])
-        ], 404);
-        
+                "msg" => __('paw.langfail', ['lang' => $lang ])
+            ], 404);
+        } else if ($request->isMethod('get')) {
+            $lang = auth()->user()->lang;
+            if ($lang == null) {
+                return response()->json([
+                    "msg" => __('paw.notlang')
+                ], 404);
+            } else {
+                return response()->json([
+                    "msg" => __('paw.langfound', ['lang' => $lang ]),
+                    "data" => $lang
+                ], 200);
+            }
+        } else {
+            return response()->json([
+                "msg" => __('paw.routenothing')
+            ], 404);
+        }        
     }
 
     public function login (Request $request) {
@@ -121,7 +139,7 @@ class UsersController extends Controller
             return response()->json([
                 "msg" => __('paw.anycages'),
                 "data" => []
-            ], 206);
+            ], 200);
         } else {
             return response()->json([
                 "msg" => trans_choice('paw.foundcages', $count),
@@ -137,14 +155,21 @@ class UsersController extends Controller
             return response()->json([
                 "msg" => __('paw.anypets'),
                 "data" => []
-            ], 206);
+            ], 200);
         } else {
             return response()->json([
                 "msg" => trans_choice('paw.foundpets', $count),
                 "data" => $pets
             ], 200);
         }
-    }    
+    }
+
+    public function mypets (Request $request, int $id) {
+        $mypet = auth()->user()->pets->find($id);
+        if ($mypet != null && $mypet->image != null) {
+            return Storage::disk('s3')->response($mypet->image);
+        }
+    }
 }
 
 class UserValidation {

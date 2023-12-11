@@ -68,8 +68,8 @@ class SpaceValidation {
 
     function createSpace(Request $request, $id) {
         $validate = Validator::make($request->all(), [
-            "name"          => "min:3|max:20",
-            "description"   => "min:5|max:45"
+            "name"          => "required|min:3|max:20",
+            "description"   => "required|min:5|max:45"
         ]);
 
         if ($validate->fails()) {
@@ -87,8 +87,8 @@ class SpaceValidation {
 
     function updateSpace(Request $request) {
         $validate = Validator::make($request->all(), [
-            "name"          => "min:3|max:40",
-            "description"   => "min:5|max:45"
+            "name"          => "required|min:3|max:40",
+            "description"   => "required|min:5|max:45"
         ]);
 
         if ($validate->fails()) {
