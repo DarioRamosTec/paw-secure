@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pet;
+use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
+use Storage;
 
 class PetsController extends Controller
 {
@@ -15,16 +17,18 @@ class PetsController extends Controller
         if ($error != null) {
             return $error;
         }
-        if ($request->image != null) {
-            $path = $request->file('image')->store('images', 's3');
-            $validation->pet->image = $path;
+        if ($request->image != null) {            
+            $link = 'images/'.auth()->user()->id.count(auth()->user()->pets).'.png';
+            $imageContent = base64_decode($request->image);
+            Storage::disk('s3')->put($link, $imageContent);
+            $validation->pet->image = $link;
         }
 
         $validation->save();
         return response()->json([
             "msg"   => __('paw.petcreated'),
             "data"  => collect($validation->pet)->except(['created_at', 'updated_at'])
-        ], 202);
+        ], 201);
     }
 
     public function update (Request $request, int $id) {
@@ -75,7 +79,7 @@ class PetValidation {
             "race"          => "min:2|max:15",
             'sex'           => [new Enum(SexEnum::class)],
             "icon"          => "required|integer",
-            "image"         => "image|mimes:jpg,png,jpeg,gif|size:2048",
+            "image"         => "max:2000000",
             "animal"        => "integer|required|exists:App\Models\Animal,id",
             "birthday"      => ["date_format:d/m/Y", "before_or_equal:".now()->format('Y-m-d')],
             "description"   => "required|min:5|max:45"
