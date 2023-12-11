@@ -19,7 +19,7 @@ class PetsController extends Controller
         }
         if ($request->image != null) {            
             $link = 'images/'.auth()->user()->id.count(auth()->user()->pets).'.png';
-            $imageContent = base64_decode($request->image);
+            $imageContent = base64_decode(str_replace("\r\n", "", $request->image));
             Storage::disk('s3')->put($link, $imageContent);
             $validation->pet->image = $link;
         }
