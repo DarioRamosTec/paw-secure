@@ -63,4 +63,5 @@ Route::group([
     'prefix'=> 'v1/sensors'
     ], function ($router) {
     Route::get('/movement', [MovementController::class, 'movimiento']);
+    
     });
