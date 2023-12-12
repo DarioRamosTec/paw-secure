@@ -26,7 +26,7 @@ class PetSpacesController extends Controller
         if ($space != null && $space->user == auth()->user()->id && count($petspace) == 0) {
             $validate = Validator::make($request->all(), [
                 'pets'      => 'required|array',
-                'pets.*'    => 'required|integer|distinct'
+                'pets.*'    => 'required|integer|distinct|exists:App\Models\Pet,id'
             ]);
             if ($validate->fails()) {
                 return response()->json([
