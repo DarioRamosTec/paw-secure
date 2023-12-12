@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->dateTime('time');
             $table->double('measure');
+            $table->string('data')->nullable(true);
             $table->unsignedBigInteger('sensor_type');
             $table->unsignedBigInteger('space');
+            $table->unsignedBigInteger('pet')->nullable();
             $table->timestamps();
         });
     }

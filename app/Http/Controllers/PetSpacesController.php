@@ -55,10 +55,11 @@ class PetSpacesController extends Controller
                 ]);
             }
 
+            $space = Space::find($id);
             return response()->json([
                 "msg" => __('paw.petspacecreated'),
-                "data" => $space
-            ], 202);
+                "data" => [$space]
+            ], 201);
         } else {
             return response()->json([
                 "msg" => __('paw.petspacesnotpets'),
@@ -73,7 +74,7 @@ class PetSpacesController extends Controller
         if ($space != null && $space->user == auth()->user()->id && count($petspace) > 0) {
             $validate = Validator::make($request->all(), [
                 'pets'      => 'required|array',
-                'pets.*'    => 'required|integer|distinct'
+                'pets.*'    => 'required|integer|distinct|exists:App\Models\Pet,id'
             ]);
             if ($validate->fails()) {
                 return response()->json([

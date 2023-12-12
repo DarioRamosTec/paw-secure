@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pet;
 use App\Models\Space;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,8 +21,8 @@ class SpacesController extends Controller
         $validation->save();
         return response()->json([
             "msg"   => __('paw.spacecreated'),
-            "data"  => collect($validation->space)->except(['created_at', 'updated_at'])
-        ], 202);
+            "data"  => [collect($validation->space)->except(['created_at', 'updated_at'])]
+        ], 201);
     }
 
     public function update (Request $request, int $id) {
@@ -57,7 +58,75 @@ class SpacesController extends Controller
         }
 
         return response()->json([
-            "msg"   => __('paw.indexSpace'),
+            "msg"   => __('paw.indexspace'),
+            "data"  => $space
+        ], 200);
+    }
+
+    public function link (Request $request, int $id) {
+        $space = Space::find($id);
+        if ($space == null || $space->user != auth()->user()->id) {
+            return response()->json([
+                "msg"   => __('paw.403'),
+                "data"  => []
+            ], 403);
+        }
+        
+        $validate = Validator::make($request->all(), [
+            "mac"      => "required|mac_address"
+        ]);
+        if ($validate->fails()) {
+            return response()->json([
+                "msg" => __('paw.spacenotlinked'),
+                "errors" => $validate->errors()
+            ], 400);
+        }
+        $space->mac = $request->mac;
+        $space->linked = true;
+        $space->save();
+
+        return response()->json([
+            "msg"   => __('paw.spacelink'),
+            "data"  => $space
+        ], 200);
+    }
+
+    public function target (Request $request, int $id) {
+        $space = Space::find($id);
+        if ($space == null || $space->user != auth()->user()->id) {
+            return response()->json([
+                "msg"   => __('paw.403'),
+                "data"  => []
+            ], 403);
+        }
+
+        $validate = Validator::make($request->all(), [
+            "pet"          => "integer|exists:App\Models\Pet,id",
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                "msg" => __('paw.spacenotcreated'),
+                "errors" => $validate->errors()
+            ], 400);
+        }
+
+        if ($request->pet != null) {
+            $pet = $space->pets->firstWhere('id', $request->pet);
+            if ($pet == null || $pet->user != auth()->user()->id) {
+                return response()->json([
+                    "msg"   => __('paw.403'),
+                    "data"  => []
+                ], 403);
+            }
+            $space->target = $pet->id;
+        } else {
+            $space->target = null;
+        }
+        $space->save();
+
+        return response()->json([
+            "msg"   => __('paw.spacetarget'),
             "data"  => $space
         ], 200);
     }

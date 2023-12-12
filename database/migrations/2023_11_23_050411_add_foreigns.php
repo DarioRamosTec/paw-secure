@@ -24,6 +24,7 @@ return new class extends Migration
 
         Schema::table('spaces', function (Blueprint $table) {
             $table->foreign('user')->references('id')->on('users');
+            $table->foreign('target')->references('id')->on('pets');
         });
         
         Schema::table('pet_space', function (Blueprint $table) {
@@ -34,6 +35,7 @@ return new class extends Migration
         Schema::table('sensors', function (Blueprint $table) {
             $table->foreign('sensor_type')->references('id')->on('sensor_type');
             $table->foreign('space')->references('id')->on('spaces');
+            $table->foreign('pet')->references('id')->on('pets');
         }); 
 
         Artisan::call('db:seed', [

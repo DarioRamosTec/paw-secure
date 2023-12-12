@@ -30,11 +30,17 @@ return [
     "petspacecreated" => "¡Tu espacio fue creado!",
     "petspaceupdated" => "¡Tu espacio fue actualizado!",
     "petspacesempty" => "Quieres actualizar un espacio sin animales.",
-    "sensorinfo" => "Esta es la información de tu sensor de :sensor.",
+    "sensorinfo" => "Esta es la información de tu sensor.",
     "iovalidate" => "El código de IO no puede ser validado.",
     "ioerror" => "No se puede comunicar con el servidor IO.",
     "nothing" => "Nada aquí.",
     "routenothing" => "Esta ruta no retorna ningún valor.",
     "notlang" => "No tienes un lenguaje definido.",
     "langfound" => "Tu código de lenguaje es :lang.",
+    "spacenotlinked" => "El espacio no fue vinculado.",
+    "indexspace" => "Este es tu espacio.",
+    'sensornotgeneral' => 'El sensor no puede ser accedido en esta ruta.',
+    'sensornotfound' => 'El tipo de sensor no fue encontrado.',
+    'spacetarget' =>  'Se ha definido un objetivo para el espacio.',
+    'spacelink'=> 'Se ha vinculado el espacio.'
 ];

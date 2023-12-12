@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sensor;
+use App\Models\SensorType;
 use App\Models\Space;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -10,8 +11,10 @@ use Illuminate\Support\Facades\Validator;
 
 class SensorsController extends Controller
 {
-    public function presence (int $id)
-    {
+    public $_num = "[\+|\-]?[0-9]+([\.][0-9]+)?";
+    public $_uid = "[U][0-9]+";
+
+    public function sensor (int $id, string $sensor) {
         $space = Space::find($id);
         if ($space == null || $space->user != auth()->user()->id) {
             return response()->json([
@@ -20,68 +23,210 @@ class SensorsController extends Controller
             ], 403);
         }
 
-        $presence = Sensor::where([['space', $id], ['sensor_type', 1]])->get()->last();
-
-        $response = Http::withHeaders(['x-aio-key'=> config('paw.adafruit')])
-                ->get('https://io.adafruit.com/api/v2/PawSecure/feeds/movimiento/data');
-        if ($response->ok()) {
-            $presences = collect($response->json());
-            $uid = 'U'.strval($id);
-            foreach ($presences as $sensor) {
-                $value = $sensor['value'];
-                if (str_contains($value, $uid)) {
-                    $validate = Validator::make($sensor, [
-                        "value" => ["regex:/([U][0-9]+[\-][0-9]+){1}/i"],
-                    ]);
-
-                    if (!$validate->fails()) {
-                        $measure = explode('-', $value)[1];
-                        $time = date("Y-m-d h:i:s", strtotime($sensor['created_at']));
-                        if ($presence->time !== $time) {
-                            $presence = new Sensor();
-                            $presence->measure = $measure;
-                            $presence->time = date("Y-m-d h:i:s", strtotime($time));
-                            $presence->space = $id;
-                            $presence->sensor_type = 1;
-                            $presence->save();
+        $sensor_type = SensorType::firstWhere('name', $sensor);
+        if ($sensor_type != null) {
+            if ($sensor_type->name != 'motion' && $sensor_type->name != 'position' ) {
+                $response = Http::withHeaders(['x-aio-key'=> config('paw.adafruit')])
+                    ->get('https://io.adafruit.com/api/v2/PawSecure/feeds/'.$sensor_type->feed.'/data');
+                
+                if ($response->ok()) {
+                    $magnitude = Sensor::where([['space', $id], ['sensor_type', $sensor_type->id]])->get()->last();
+                    $feed = collect($response->json());
+                    $uid = 'U'.strval($id);
+                    foreach ($feed as $data) {
+                        $value = $data['value'];
+                        if (str_contains($value, $uid)) {
+                            $validate = Validator::make($data, [
+                                "value" => ["regex:/(".$this->_uid."[:]".$this->_num."){1}/i"],
+                            ]);
+        
+                            if (!$validate->fails()) {
+                                $measure = explode(':', $value)[1];
+                                $time = date("Y-m-d h:i:s", strtotime($data['created_at']));
+                                if ($magnitude == null || ($magnitude->time !== $time && $magnitude->measure != $measure)) {
+                                    $magnitude = new Sensor();
+                                    $magnitude->measure = $measure;
+                                    $magnitude->time = date("Y-m-d h:i:s", strtotime($time));
+                                    $magnitude->space = $id;
+                                    $magnitude->sensor_type = $sensor_type->id;
+                                    $magnitude->pet = $space->target;
+                                    $magnitude->save();
+                                    $magnitude = Sensor::find($magnitude->id);
+                                }
+                                break;
+                            }
                         }
-                        break;
                     }
+                    if ($magnitude == null) {
+                        return response()->json([
+                            "msg" => __('paw.sensorinfo'),
+                            "data" => [],
+                        ], 202);   
+                    } else {
+                        return response()->json([
+                            "msg" => __('paw.sensorinfo'),
+                            "data" => $magnitude,
+                        ], 200);
+                    }
+                } else {
+                    return response()->json([
+                        "msg" => __('paw.ioerror'),
+                        "data" => []
+                    ], 404);
                 }
+            } else {
+                return response()->json([
+                    "msg" => __('paw.sensornotgeneral'),
+                    "data" => []
+                ], 400);
             }
-            return response()->json([
-                "msg" => __('paw.sensorinfo', ['sensor' => __('presence') ]),
-                "data" => $presence,
-            ], 200);
         } else {
             return response()->json([
-                "msg" => __('paw.ioerror'),
-                "data" => $presence
-            ], 206);
+                "msg" => __('paw.sensornotfound'),
+                "data" => []
+            ], 404);
         }
     }
 
-    public function humidity (Request $request) {
+    public function motion (Request $request, int $id) {
+        $space = Space::find($id);
+        if ($space == null || $space->user != auth()->user()->id) {
+            return response()->json([
+                "msg"   => __('paw.403'),
+                "data"  => []
+            ], 403);
+        }
 
+        $sensor_type = SensorType::firstWhere('name', 'motion');
+        if ($sensor_type != null) {
+            $response = Http::withHeaders(['x-aio-key'=> config('paw.adafruit')])
+                ->get('https://io.adafruit.com/api/v2/PawSecure/feeds/'.$sensor_type->feed.'/data');
+            
+            if ($response->ok()) {
+                $magnitude = Sensor::where([['space', $id], ['sensor_type', $sensor_type->id]])->get()->last();
+                $feed = collect($response->json());
+                $uid = 'U'.strval($id);
+                foreach ($feed as $data) {
+                    $value = $data['value'];
+                    if (str_contains($value, $uid)) {
+                        $validate = Validator::make($data, [
+                            "value" => ["regex:/(".$this->_uid."[:][x]".$this->_num."[y]".$this->_num."[z]".$this->_num."){1}/i"],
+                        ]);
+    
+                        if (!$validate->fails()) {
+                            $measure = 1;
+                            $vls = explode(':', $value)[1];
+                            $time = date("Y-m-d h:i:s", strtotime($data['created_at']));
+                            if ($magnitude == null || ($magnitude->time !== $time)) {
+                                $magnitude = new Sensor();
+                                $magnitude->measure = $measure;
+                                $magnitude->data = $vls;
+                                $magnitude->time = date("Y-m-d h:i:s", strtotime($time));
+                                $magnitude->space = $id;
+                                $magnitude->sensor_type = $sensor_type->id;
+                                $magnitude->pet = $space->target;
+                                $magnitude->save();
+                                $magnitude = Sensor::find($magnitude->id);
+                            }
+                            break;
+                        }
+                    }
+                }
+                if ($magnitude == null) {
+                    return response()->json([
+                        "msg" => __('paw.sensorinfo'),
+                        "data" => [],
+                    ], 202);   
+                } else {
+                    return response()->json([
+                        "msg" => __('paw.sensorinfo'),
+                        "data" => $magnitude,
+                    ], 200);
+                }
+            } else {
+                return response()->json([
+                    "msg" => __('paw.ioerror'),
+                    "data" => []
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                "msg" => __('paw.sensornotfound'),
+                "data" => []
+            ], 404);
+        }
     }
 
-    public function sound (Request $request) {
+    public function position (Request $request, int $id) {
+        $space = Space::find($id);
+        if ($space == null || $space->user != auth()->user()->id) {
+            return response()->json([
+                "msg"   => __('paw.403'),
+                "data"  => []
+            ], 403);
+        }
 
+        $sensor_type = SensorType::firstWhere('name', 'position');
+        if ($sensor_type != null) {
+            $response = Http::withHeaders(['x-aio-key'=> config('paw.adafruit')])
+                ->get('https://io.adafruit.com/api/v2/PawSecure/feeds/'.$sensor_type->feed.'/data');
+            
+            if ($response->ok()) {
+                $magnitude = Sensor::where([['space', $id], ['sensor_type', $sensor_type->id]])->get()->last();
+                $feed = collect($response->json());
+                $uid = 'U'.strval($id);
+                foreach ($feed as $data) {
+                    $value = $data['value'];
+                    if (str_contains($value, $uid)) {
+                        $validate = Validator::make($data, [
+                            "value" => ["regex:/(".$this->_uid."[:]".$this->_num."[\,]".$this->_num."){1}/i"],
+                        ]);
+    
+                        if (!$validate->fails()) {
+                            $measure = 1;
+                            $vls = explode(':', $value)[1];
+                            $time = date("Y-m-d h:i:s", strtotime($data['created_at']));
+                            if ($magnitude == null || $magnitude->time !== $time) {
+                                $magnitude = new Sensor();
+                                $magnitude->measure = $measure;
+                                $magnitude->data = $vls;
+                                $magnitude->time = date("Y-m-d h:i:s", strtotime($time));
+                                $magnitude->space = $id;
+                                $magnitude->sensor_type = $sensor_type->id;
+                                $magnitude->pet = $space->target;
+                                $magnitude->save();
+                                $magnitude = Sensor::find($magnitude->id);
+                            }
+                            break;
+                        }
+                    }
+                }
+                if ($magnitude == null) {
+                    return response()->json([
+                        "msg" => __('paw.sensorinfo'),
+                        "data" => [],
+                    ], 202);   
+                } else {
+                    return response()->json([
+                        "msg" => __('paw.sensorinfo'),
+                        "data" => $magnitude,
+                    ], 200);
+                }
+            } else {
+                return response()->json([
+                    "msg" => __('paw.ioerror'),
+                    "data" => []
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                "msg" => __('paw.sensornotfound'),
+                "data" => []
+            ], 404);
+        }
     }
 
-    public function temperature (Request $request) {
-
-    }
-
-    public function gas (Request $request) {
-
-    }
-
-    public function motion (Request $request) {
-
-    }
-
-    public function position (Request $request) {
+    public function general (Request $request, int $id) {
 
     }
 

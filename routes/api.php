@@ -41,14 +41,23 @@ Route::group([
     Route::put('lang/{lang}', [UsersController::class, 'lang']);
     Route::get('spaces', [UsersController::class, 'spaces']);
     Route::get('pets', [UsersController::class, 'pets']);
+
     Route::post('pet', [PetsController::class, 'store']);
     Route::put('pet/{id}', [PetsController::class, 'update'])->where('id', '[0-9]+');
     Route::get('pet/{id}', [PetsController::class, 'index'])->where('id', '[0-9]+');
+
+    Route::get('space/{id}', [SpacesController::class, 'index'])->where('id', '[0-9]+');
     Route::post('space', [SpacesController::class, 'store']);
+    Route::post('space/{id}/link', [SpacesController::class, 'link'])->where('id', '[0-9]+');
+    Route::patch('space/{id}/target', [SpacesController::class, 'target'])->where('id', '[0-9]+');
+
     Route::post('spaces/{id}', [PetSpacesController::class, 'store'])->where('id', '[0-9]+');
     Route::put('spaces/{id}', [PetSpacesController::class, 'update'])->where('id', '[0-9]+');
 
-    Route::get('space/{id}/presence', [SensorsController::class, 'presence'])->where('id', '[0-9]+');
+    Route::get('space/{id}/position', [SensorsController::class, 'position'])->where('id', '[0-9]+');
+    Route::get('space/{id}/motion', [SensorsController::class, 'motion'])->where('id', '[0-9]+');
+    Route::get('space/{id}/sensor/{sensor}', [SensorsController::class, 'sensor'])->where('id', '[0-9]+');
+    Route::get('space/{id}/sensors', [SensorsController::class, 'general'])->where('id', '[0-9]+');
 });
 
 Route::group([

@@ -15,39 +15,46 @@ class SensorTypeSeeder extends Seeder
     public function run()
     {
         \App\Models\SensorType::factory()->createMany([[
-            'name' => 'Presence',
+            'name' => 'presence',
             'details' => 'It measure the presence.',
-            'unity' => ''
+            'unity' => '',
+            'feed' => 'movimiento'
         ],
         [
-            'name' => 'Humidity',
+            'name' => 'humidity',
             'details' => 'It measure the humidity.',
-            'unity' => '%'
+            'unity' => '%',
+            'feed' => 'humedad'
         ],
         [
-            'name' => 'Sound',
+            'name' => 'sound',
             'details' => 'It measure the sound.',
-            'unity' => 'dB'
+            'unity' => '',
+            'feed' => 'sonido'
         ],
         [
-            'name' => 'Temperature',
+            'name' => 'temperature',
             'details' => 'It measure the temperature.',
-            'unity' => 'Celsius'
+            'unity' => '°C',
+            'feed' => 'temperatura'
         ],
         [
-            'name' => 'Gas',
+            'name' => 'gas',
             'details' => 'It measure the gas.',
-            'unity' => '%'
+            'unity' => 'ppm',
+            'feed' => 'mq2'
         ],
         [
-            'name' => 'Motion',
+            'name' => 'motion',
             'details' => 'It measure the motion.',
-            'unity' => '%'
+            'unity' => '',
+            'feed' => 'acelerometro'
         ],
         [
-            'name' => 'Position',
+            'name' => 'position',
             'details' => 'It measure the position.',
-            'unity' => ''
+            'unity' => '',
+            'feed' => 'gps'
         ],]);
     }
 }

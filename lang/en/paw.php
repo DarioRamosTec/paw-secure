@@ -30,11 +30,17 @@ return [
     "petspacecreated" => "You're space has been created!",
     "petspaceupdated" => "You're space has been updated!",
     "petspacesempty" => "You cannot edit a space that is empty.",
-    "sensorinfo" => "This is the :sensor's information.",
     "iovalidate" => "The code of IO cannot been validated.",
     "ioerror" => "We cannot communicate with the IO server.",
     "nothing" => "Nothing here.",
     "routenothing" => "This route doesn't do anything.",
     "notlang" => "You doesn't have a language defined.",
     "langfound" => "Your language is :lang.",
+    "spacenotlinked" => "The space wasn't linked.",
+    "indexspace" => "This is your space.",
+    'sensornotgeneral' => 'This sensor cannot be access in this route.',
+    'sensornotfound' => "The sensor type doesn't exist.",
+    "sensorinfo" => "This is your sensor's info.",
+    'spacetarget' =>  "The space's target was set.",
+    'spacelink'=> 'The space was linked.'
 ];

@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
+            $table->string('mac')->nullable(true);
+            $table->boolean('linked')->default(false);
             $table->foreignId('user');
+            $table->foreignId('target')->nullable();
             $table->timestamps();
         });
     }
