@@ -226,8 +226,40 @@ class SensorsController extends Controller
         }
     }
 
-    public function general (Request $request, int $id) {
+    public function index (int $id) {
+        $space = Space::find($id);
+        if ($space == null || $space->user != auth()->user()->id) {
+            return response()->json([
+                "msg"   => __('paw.403'),
+                "data"  => []
+            ], 403);
+        }
 
+        $pets = $space->pets;
+        $sensorTypes = SensorType::all('id');
+        $allPetSensors = collect();
+        foreach ($pets as $pet) {
+                $petSensor = [];
+                foreach ($sensorTypes as $sensor_type) {
+                    $sensorData = Sensor::where([['space', $id], ['sensor_type', $sensor_type->id], ['pet', $pet->id]])
+                    ->get()
+                    ->first();
+                    array_push($petSensor, $sensorData);
+                }
+                $allPetSensors = $allPetSensors->put($pet->id, $petSensor);
+        }
+        $petSensor = [];
+        foreach ($sensorTypes as $sensor_type) {
+        $sensorData = Sensor::where([['space', $id], ['sensor_type', $sensor_type->id], ['pet', null]])
+            ->get()->first();
+            array_push($petSensor, $sensorData);
+        }
+        $allPetSensors = $allPetSensors->put('0', $petSensor);
+        
+        return response()->json([
+            "msg" => __('paw.sensorinfo'),
+            "data" => $allPetSensors
+        ], 200);
     }
 
 }

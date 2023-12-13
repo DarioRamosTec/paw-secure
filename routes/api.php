@@ -57,7 +57,7 @@ Route::group([
     Route::get('space/{id}/position', [SensorsController::class, 'position'])->where('id', '[0-9]+');
     Route::get('space/{id}/motion', [SensorsController::class, 'motion'])->where('id', '[0-9]+');
     Route::get('space/{id}/sensor/{sensor}', [SensorsController::class, 'sensor'])->where('id', '[0-9]+');
-    Route::get('space/{id}/sensors', [SensorsController::class, 'general'])->where('id', '[0-9]+');
+    Route::get('space/{id}/sensors', [SensorsController::class, 'index'])->where('id', '[0-9]+');
 });
 
 Route::group([
