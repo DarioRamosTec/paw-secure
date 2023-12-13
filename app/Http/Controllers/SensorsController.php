@@ -258,7 +258,7 @@ class SensorsController extends Controller
         
         return response()->json([
             "msg" => __('paw.sensorinfo'),
-            "data" => $allPetSensors
+            "data" => [$allPetSensors]
         ], 200);
     }
 
