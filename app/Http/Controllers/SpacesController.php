@@ -59,7 +59,7 @@ class SpacesController extends Controller
 
         return response()->json([
             "msg"   => __('paw.indexspace'),
-            "data"  => $space
+            "data"  => [$space]
         ], 200);
     }
 
