@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('time');
             $table->double('measure');
             $table->string('data')->nullable(true);
+            $table->string('seen')->default(false);
             $table->unsignedBigInteger('sensor_type');
             $table->unsignedBigInteger('space');
             $table->unsignedBigInteger('pet')->nullable();
