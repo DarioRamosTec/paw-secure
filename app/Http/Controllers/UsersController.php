@@ -211,7 +211,7 @@ class UserValidation {
             $this->email        = $request->get('email', $user->email);
             $this->genre        = $request->get('genre', $user->genre);
             $this->password     = $request->get('password', $user->password);
-            $this->birthday     = date("d-m-Y", strtotime($request->get('birthday', $user->birthday)));
+            //$this->birthday     = date("d-m-Y", strtotime($request->get('birthday', $user->birthday)));
         }
     }
 
@@ -269,7 +269,7 @@ class UserValidation {
         $model->email       = $this->email;
         $model->genre       = $this->genre;
         $model->password    = Hash::make($this->password);
-        $model->birthday    = $this->birthday;
+        //$model->birthday    = $this->birthday;
         $model->save();
     }
 
