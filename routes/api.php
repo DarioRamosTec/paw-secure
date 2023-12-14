@@ -37,6 +37,7 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::get('me', [AuthController::class, 'me']);
     
+    Route::post('me', [UsersController::class, 'update']);
     Route::get('lang', [UsersController::class, 'lang']);
     Route::put('lang/{lang}', [UsersController::class, 'lang']);
     Route::get('spaces', [UsersController::class, 'spaces']);
