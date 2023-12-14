@@ -60,7 +60,7 @@ class UsersController extends Controller
 
     public function update (Request $request) {
         $content = new UserValidation();
-        $error = $content->checkUpdate($request);
+        $error = $content->checkUpdate($request, auth()->user());
         if ($error != null) {return $error;}
 
         $user = User::find(auth()->user()->id);
