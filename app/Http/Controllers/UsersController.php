@@ -63,9 +63,9 @@ class UsersController extends Controller
         $error = $content->checkUpdate($request);
         if ($error != null) {return $error;}
 
-        $user = User::find(auth()->user()->id)
+        $user = User::find(auth()->user()->id);
         $content->update($user);
-        $user = User::find(auth()->user()->id)
+        $user = User::find(auth()->user()->id);
         
         return response()->json([
             "msg"   => __('paw.found'),
