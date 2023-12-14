@@ -243,7 +243,7 @@ class SensorsController extends Controller
                 foreach ($sensorTypes as $sensor_type) {
                     $sensorData = Sensor::where([['space', $id], ['sensor_type', $sensor_type->id], ['pet', $pet->id]])
                     ->get()
-                    ->first();
+                    ->last();
                     array_push($petSensor, $sensorData);
                 }
                 $allPetSensors = $allPetSensors->put($pet->id, $petSensor);
@@ -251,7 +251,7 @@ class SensorsController extends Controller
         $petSensor = [];
         foreach ($sensorTypes as $sensor_type) {
         $sensorData = Sensor::where([['space', $id], ['sensor_type', $sensor_type->id], ['pet', null]])
-            ->get()->first();
+            ->get()->last();
             array_push($petSensor, $sensorData);
         }
         $allPetSensors = $allPetSensors->put('0', $petSensor);
