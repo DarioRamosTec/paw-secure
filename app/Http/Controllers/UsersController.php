@@ -194,7 +194,7 @@ class UserValidation {
             'genre'         => [new Enum(GenreEnum::class)],
             "password"      => "min:4|max:256",
             "image"         => "min:3",
-            "birthday"      => "date_format:m/d/Y"
+            "birthday"      => ["date_format:d/m/Y", "before_or_equal:".now()->format('Y-m-d')],
         ]);
 
         if ($validate->fails()) {
