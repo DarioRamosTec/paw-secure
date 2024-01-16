@@ -26,14 +26,47 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => __('401')], 401);
+            return response()->json(['error' => __('error.401')], 401);
         } else {
             if (auth()->user()->is_active) {
+                Log::info(__('notification.login', ['name' => auth()->user()->name ]));
                 return $this->respondWithToken($token);
             } else {
-                return response()->json(['error' => __('403')], 403);
+                return response()->json(['error' => __('error.403')], 403);
             }
         }
+    }
+
+    /*
+     * Get a Sanctum API via given credentials.
+     */
+    public function login_sanctum()
+    {
+        $validate = Validator::make($request->all(), [
+            "email"         => "bail|required|email",
+            "password"      => "bail|required|min:4|max:256",
+        ]);
+    
+        if ($validate->fails()) {
+            return response()->json([
+                "msg" => __('paw.errorsfound'),
+                "errors" =>$validate->errors()
+            ], 422);
+        }
+     
+        $user = User::where('email', $request->email)->first();
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => __('error.401')], 401);
+        }
+        $token = $user->createToken("login")->plainTextToken;
+
+        $user->notify(new LoginSuccessful(
+            __('notification.login', ['name' => auth()->user()->name ]),
+            __('notification.header')));
+        return response()->json([
+            "msg"   => __('auth.token'),
+            "token" => $token
+        ], 201);
     }
 
     /**

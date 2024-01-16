@@ -21,10 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
 Route::controller(UsersController::class)->prefix('v1')->group(function () {
     Route::post('register', 'store');
 });
@@ -66,4 +62,21 @@ Route::group([
     'prefix' => 'v1/auth'
 ], function ($router) {
     Route::post('login', [AuthController::class, 'login'])->name('login');
+});
+
+
+Route::group([
+    'prefix' => 'v2'
+], function () {
+    Route::post('register', [UsersController::class, 'store']);
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('login/sanctum', [AuthController::class, 'login_sanctum']);
+    
+    Route::middleware(['auth:api:jwt', 'locale'])->group(function() {
+        Route::get('logout', [AuthController::class, 'logout']);
+        Route::get('refresh', [AuthController::class, 'refresh']);
+        Route::get('me', [AuthController::class, 'me']);
+        Route::get('me/sanctum', [AuthController::class, 'me_sanctum']);
+    });
+
 });
