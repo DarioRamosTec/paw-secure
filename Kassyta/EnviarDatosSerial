@@ -1,0 +1,20 @@
+//Mostrara el valor de la variable este ejemplo en el serial monitor que seria prueba6 por los 6 bites de prueba.
+
+char cadena[] ="Prueba";
+byte bytesDevueltos;
+void setup(){
+    serial.begin(9600);
+    bytesDevueltos=Serial.write(cadena);
+    Serial.printIn(bytesDEvueltos);
+    }
+void loop(){}
+
+//Aqui la manera de trabajar con array de datos
+//array tipo byte
+byte arraybytes=[]={65 , 66, 67 , 69};
+void setup (){
+Serial.begin(9600);
+//envia 2 primeros elementos del array 
+Serial.write(arraybytes, 2);
+}
+void loop(){}
