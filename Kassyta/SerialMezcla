@@ -1,0 +1,29 @@
+import serial
+import time
+
+# Define el puerto serie y la velocidad de comunicación
+puerto_serie = '/dev/ttyUSB0'  # Ajusta el puerto según tu configuración
+velocidad_serie = 9600
+
+# Inicializa la conexión serie
+try:
+    conexion_serial = serial.Serial(puerto_serie, velocidad_serie)
+    print("Conexión serial establecida correctamente en", puerto_serie)
+except serial.SerialException:
+    print("Error al abrir el puerto serie. ¿Está el Arduino conectado correctamente?")
+    exit()
+
+# Espera un momento para que se establezca la conexión
+time.sleep(2)
+
+try:
+    while True:
+        # Lee los datos del puerto serie
+        datos = conexion_serial.readline().decode().strip()
+        
+        # Imprime los datos recibidos
+        print("Datos recibidos:", datos)
+except KeyboardInterrupt:
+    # Captura la interrupción de teclado (Ctrl+C) para salir limpiamente
+    print("\nCerrando conexión serial...")
+    conexion_serial.close()
