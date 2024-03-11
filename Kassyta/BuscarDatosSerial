@@ -1,0 +1,10 @@
+boolean encontrado;
+void setup(){
+Serial.begin(9600);
+}
+void loop(){
+encontrado=Serial.find("Prueba");
+if (encontrado == true) {
+Serial.printIn("Encontrado");
+}
+}
