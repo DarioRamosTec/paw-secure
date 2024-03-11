@@ -27,3 +27,13 @@ except KeyboardInterrupt:
     # Captura la interrupción de teclado (Ctrl+C) para salir limpiamente
     print("\nCerrando conexión serial...")
     conexion_serial.close()
+////////////////////////
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Envía datos a la Raspberry Pi
+  Serial.println("Hola desde Arduino!");
+  delay(1000);
+}
